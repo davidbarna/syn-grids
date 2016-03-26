@@ -20,5 +20,8 @@
   "devDependencies": {
     "dev-tools": "git://github.com/soyundev/dev-tools.git",
     "gulp": "3.9.1"
+  },
+  "dependencies": {
+    "angular-bsfy": "1.4.8"
   }
 }
