@@ -1,0 +1,19 @@
+{
+  "name": "syn-grids",
+  "version": "1.0.0",
+  "description": "Data grid components.",
+  "main": "dest/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soyundev/syn-grids.git"
+  },
+  "author": "David Almeida <davidbarna@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/soyundev/syn-grids/issues"
+  },
+  "homepage": "https://github.com/soyundev/syn-grids#readme"
+}
