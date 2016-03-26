@@ -4,7 +4,8 @@
   "description": "Data grid components.",
   "main": "dest/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test",
+    "install": "node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/soyundev/syn-grids/issues"
   },
-  "homepage": "https://github.com/soyundev/syn-grids#readme"
+  "homepage": "https://github.com/soyundev/syn-grids#readme",
+  "devDependencies": {
+    "dev-tools": "git://github.com/soyundev/dev-tools.git",
+    "gulp": "3.9.1"
+  }
 }
