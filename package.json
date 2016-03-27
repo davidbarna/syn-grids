@@ -1,0 +1,28 @@
+{
+  "name": "syn-grids",
+  "version": "1.0.0",
+  "description": "Data grid components.",
+  "main": "dest/index.js",
+  "scripts": {
+    "test": "gulp test",
+    "install": "node_modules/.bin/gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soyundev/syn-grids.git"
+  },
+  "author": "David Almeida <davidbarna@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/soyundev/syn-grids/issues"
+  },
+  "homepage": "https://github.com/soyundev/syn-grids#readme",
+  "devDependencies": {
+    "dev-tools": "git://github.com/soyundev/dev-tools.git",
+    "gulp": "3.9.1"
+  },
+  "dependencies": {
+    "angular-bsfy": "1.4.8",
+    "jade": "1.11.0"
+  }
+}
