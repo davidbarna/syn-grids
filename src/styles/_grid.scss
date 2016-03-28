@@ -1,0 +1,30 @@
+$_spacing: 2rem;
+
+.syn-grid {
+  width: 100%;
+  font-size: 1.3rem;
+
+  &_head {
+    th {
+      background: #666;
+      font-size: 1.1em;
+      color: #fff;
+    }
+  }
+
+  &_body {
+    tr {
+      background: #efefef;
+
+      &:nth-child( even ) {
+        background: #fff;
+      }
+    }
+  }
+
+  td, th {
+    padding: $_spacing/2 $_spacing;
+    font-weight: normal;
+    text-align: left;
+  }
+}
