@@ -1,0 +1,23 @@
+html
+  head
+    meta(name='viewport', content='user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height')
+    link(rel='stylesheet' type='text/css', href='/index.css')
+  body
+    h1 syn-grids
+    h2 Data Grid
+    syn-grid#data-grid-1(source="inline-json")
+    script(type='text/javascript', src='demo.bundle.js')
+    script(type='text/javascript').
+      
+      grid1 = document.getElementById( 'data-grid-1' )
+      grid1.innerHTML = JSON.stringify( {
+        head: {
+          name: { label: 'Name' },
+          lastName: { label: 'Last Name' },
+          address: { label: 'Address' },
+          email: { label: 'E-mail' }
+        },
+        data: syn.gridsDemo.faker.users( 10 ) 
+      } )
+      
+      angular.bootstrap( document.body, [ syn.grids.angular.getModule().name ] )

@@ -19,10 +19,14 @@
   "homepage": "https://github.com/soyundev/syn-grids#readme",
   "devDependencies": {
     "dev-tools": "git://github.com/soyundev/dev-tools.git",
+    "faker": "3.1.0",
     "gulp": "3.9.1"
   },
   "dependencies": {
     "angular-bsfy": "1.4.8",
-    "jade": "1.11.0"
+    "bluebird": "3.3.4",
+    "jade": "1.11.0",
+    "jqlite": "0.2.34",
+    "lodash": "4.6.1"
   }
 }

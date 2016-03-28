@@ -2,11 +2,16 @@ gridDirective =
   scope: true
   transclude: true
   template: require( './tpl' )
-  controller: [ '$scope', '$element', ( scope, elem ) ->
+  controller: [ '$scope', '$element', '$transclude', ( scope, elem, trans ) ->
     GridCtrl = require( './ctrl' )
     ctrl = new GridCtrl( elem )
     require( 'dev-tools' ).angularify( scope, ctrl )
-    ctrl.init()
+    trans( ( clone, scope ) ->
+      config = JSON.parse( clone.html() )
+      ctrl
+        .setConfig( config )
+        .init()
+    )
   ]
 
 module.exports = -> gridDirective
