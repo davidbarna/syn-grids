@@ -28,7 +28,17 @@ class GridDatasourceArray extends Abstract
   data: ( data ) ->
     return @_data if typeof data is 'undefined'
     @_data = data
+    @_length = @_data.length
     return this
+
+  ###
+   * Returns total number of rows/items
+   * @return {Promise} Resolve with total number of rows
+  ###
+  count: ->
+    new Promise ( resolve, reject ) =>
+      resolve( @_length )
+      return @_length
 
   ###
    * Returns data according to configured options
@@ -41,10 +51,14 @@ class GridDatasourceArray extends Abstract
       return resolve( @_data ) if !keys
 
       # Filter required keys
-      for obj in @_data
+      startIdx = @skip()
+      lastIdx = startIdx + @limit()
+      while startIdx < lastIdx and !!@_data[startIdx]
+        obj = @_data[startIdx]
         _obj = {}
         _obj[key] = obj[key] || '' for key in keys
         data.push( _obj )
+        startIdx++
 
       resolve( data )
 
