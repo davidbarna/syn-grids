@@ -75,7 +75,6 @@ class GridCtrl
     @_datasource.count()
       .then ( count ) =>
         @_pagination.setCount( count )
-        @updateRows()
 
   ###
    * Updates grid element with data rows

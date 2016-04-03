@@ -45,7 +45,7 @@ class PaginationCtrl extends EventsEmitter
   init: ->
     # Creates pagination elements only if pagination in not "false"
     return if @_options is false
-    @view = new PaginationView( @element, @pagination )
+    @view = new PaginationView( @pagination )
     @view.on( @view.CLICK, @_onButtonClick )
     @element.append( @view.element )
     return this
@@ -59,7 +59,6 @@ class PaginationCtrl extends EventsEmitter
     @pagination = new Pagination( @_options )
     @pagination?.on( @pagination.CHANGE, @_onPageChange )
     return this
-
 
   ###
    * Sets total rows
@@ -92,7 +91,7 @@ class PaginationCtrl extends EventsEmitter
     return if !@view
     @view.element.remove()
     @view
-      .off( @view.CLICK, @_onButtonClick )
+      .removeListener( @view.CLICK, @_onButtonClick )
       .destroy()
 
 

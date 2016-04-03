@@ -70,9 +70,7 @@ class Pagination extends EventsEmitter
     @buttons( opts.buttons || @DEFAULTS.buttons )
     @rowsPerPage( opts.rowsPerPage || @DEFAULTS.rowsPerPage )
     @current( opts.startPage || @DEFAULTS.startPage )
-    return @_emitChange()
-
-
+    return this
 
   ###
    * Set/Get number of buttons to display in navigation bar
@@ -83,7 +81,8 @@ class Pagination extends EventsEmitter
     return @_buttons if typeof num is 'undefined'
     return if Number( num ) is @_buttons
     @_buttons = Number( num )
-    return @_emitChange()
+    @_emitChange()
+    return this
 
   ###
    * Set/get rows total count
@@ -94,7 +93,8 @@ class Pagination extends EventsEmitter
   rowsCount: ( num ) ->
     return @_rowsCount if typeof num is 'undefined'
     @_rowsCount = Number( num )
-    return @_emitChange()
+    @_emitChange()
+    return this
 
   ###
    * Set/get number of rows per page.
@@ -105,7 +105,8 @@ class Pagination extends EventsEmitter
   rowsPerPage: ( num ) ->
     return @_rowsPerPage if typeof num is 'undefined'
     @_rowsPerPage = Number( num )
-    return @_emitChange()
+    @_emitChange()
+    return this
 
   ###
    * Set/Get current page number
@@ -121,7 +122,8 @@ class Pagination extends EventsEmitter
     return if ( num is @_current )
 
     @_current = Number( num )
-    return @_emitChange()
+    @_emitChange()
+    return this
 
   ###
    * Returns last page number.

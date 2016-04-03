@@ -47,8 +47,7 @@ class GridDatasourceArray extends Abstract
   get: ->
     new Promise ( resolve, reject ) =>
       data = []
-      keys = @keys()
-      return resolve( @_data ) if !keys
+      keys = @keys() || _.keys( @_data[0] )
 
       # Filter required keys
       startIdx = @skip()

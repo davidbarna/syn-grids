@@ -19,6 +19,10 @@ class GridPaginationView extends EventsEmitter
 
   CLICK: 'syn.grid.pagination.view.click'
 
+  PAGE_CLASS: '--pagination-page'
+  PREV_CLASS: '--pagination-prev'
+  NEXT_CLASS: '--pagination-next'
+
   ###
    * Emits a "page change" event
    * @param  {Event} event
@@ -39,10 +43,9 @@ class GridPaginationView extends EventsEmitter
 
   ###
    * @constructor
-   * @param  {DOM Element} @target jqLiteinstance
    * @param  {Pagination} @pagination Pagination instance
   ###
-  constructor: ( @target, @pagination ) ->
+  constructor: ( @pagination ) ->
     @element = $( document.createElement( 'SPAN' ) )
     @buttons = []
     @prev = @next = null
@@ -72,10 +75,10 @@ class GridPaginationView extends EventsEmitter
   ###
   build: ( length ) ->
     buttonsNum = length - 1
-    @prev ?= @createButton( '<' )
+    @prev ?= @createButton( '<', @PREV_CLASS )
 
     for idx in [0..buttonsNum]
-      @buttons[idx] ?= @createButton()
+      @buttons[idx] ?= @createButton( '-', @PAGE_CLASS )
 
     # Surplus buttons are destroyed
     idx = length
@@ -84,17 +87,19 @@ class GridPaginationView extends EventsEmitter
       idx++
     @buttons = @buttons.slice( 0, length )
 
-    @next ?= @createButton( '>' )
+    @next ?= @createButton( '>', @NEXT_CLASS )
 
     return this
 
   ###
    * Creates a new DOM element for a buttons with click event handler
-   * @param  {string} text = '.' Text of the button
+   * @param  {string} text Text of the button
+   * @param  {string} cssClass = @PAGE_CLASS CSS class
    * @return {DOM Element} jqLite instance
   ###
-  createButton: ( text = '.' ) ->
+  createButton: ( text, cssClass ) ->
     button = $( document.createElement( @TAGNAME ) )
+      .addClass( cssClass )
       .html( text )
       .on( 'click', @_buttonClickHandler )
     @element.append( button )
@@ -120,8 +125,10 @@ class GridPaginationView extends EventsEmitter
     @destroyButton( @prev )
     @destroyButton( @next )
     @destroyButton( button ) for button in @buttons
-    return this
+    @buttons = []
+    @prev = @next = null
 
+    return this
 
 
 module.exports = GridPaginationView
