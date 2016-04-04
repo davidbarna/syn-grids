@@ -93,6 +93,7 @@ class Pagination extends EventsEmitter
   rowsCount: ( num ) ->
     return @_rowsCount if typeof num is 'undefined'
     @_rowsCount = Number( num )
+    @last( Math.ceil( @_rowsCount / @_rowsPerPage ) - 1 )
     @_emitChange()
     return this
 
@@ -105,6 +106,7 @@ class Pagination extends EventsEmitter
   rowsPerPage: ( num ) ->
     return @_rowsPerPage if typeof num is 'undefined'
     @_rowsPerPage = Number( num )
+    @last( Math.ceil( @_rowsCount / @_rowsPerPage ) - 1 )
     @_emitChange()
     return this
 
@@ -130,8 +132,10 @@ class Pagination extends EventsEmitter
    * Based on 0. If there is 20 pages, 19 will be returned
    * @returns {number}
   ###
-  last: ->
-    return Math.ceil( @_rowsCount / @_rowsPerPage ) - 1
+  last: ( num ) ->
+    return @_last if typeof num is 'undefined'
+    @_last = Number( num )
+    return this
 
   ###
    * Returns if there is a "previous" page to current
