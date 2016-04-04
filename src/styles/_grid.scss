@@ -27,4 +27,31 @@ $_spacing: 2rem;
     font-weight: normal;
     text-align: left;
   }
+
+  &_pagination {
+
+    &.--disabled {
+      display: none;
+    }
+
+    button {
+      box-sizing: border-box;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: $_spacing/2;
+      margin: 1px;
+      background: #ddd;
+      border: 0;
+
+      &.--active {
+        background: #666;
+        font-weight: bold;
+        color: #fff;
+      }
+      
+      &.--disabled {
+        opacity: .5;
+      }
+    }
+  }
 }

@@ -56,7 +56,7 @@ class DomRowsBuilder
   ###
    * Creates DOM rows base on given data
    * @param  {Object[]} data
-   * @return {DOM Element[]} Array of DOM elements
+   * @returns {DOM Element[]} Array of DOM elements
   ###
   getRows: ( data ) ->
     rows = []
@@ -72,7 +72,7 @@ class DomRowsBuilder
   ###
    * Adds given DOM Elements to target element
    * @param  {DOM Element[]} rows Array of DOM elements
-   * @return {this}
+   * @returns {DomRowsBuilder} `this`
   ###
   appendToTarget: ( rows ) ->
     @_rows = $( rows )
@@ -84,7 +84,7 @@ class DomRowsBuilder
 
   ###
    * Removes all added rows
-   * @return {this}
+   * @returns {DomRowsBuilder} `this`
   ###
   destroy: ->
     @_rows?.remove()

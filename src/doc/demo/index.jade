@@ -4,12 +4,47 @@ html
     link(rel='stylesheet' type='text/css', href='/index.css')
   body
     h1 syn-grids
+    a(name="grid-1")
     h2 Data Grid
-    syn-grid#data-grid-1(source="inline-json")
-    script(type='text/javascript', src='demo.bundle.js')
+    syn-grid#data-grid-1()
+    p &nbsp;
+    a(name="grid-2")
+    h2 Data Grid with pagination
+    syn-grid#data-grid-2()
+    
+    script(type='text/javascript', src='faker.min.js')
+    script(type='text/javascript', src='/index.bundle.js')
+      
     script(type='text/javascript').
       
-      grid1 = document.getElementById( 'data-grid-1' )
+      // Creates "length" fake user cards
+      var createUsers =  function( length ) {
+        var data, user;
+        data = [];
+        while ( length > 0 ) {
+          user = {
+            avatar: faker.image.avatar(),
+            name: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            address: faker.address.streetAddress(),
+            email: faker.internet.email().toLowerCase(),
+            position: faker.name.title(),
+            dateOfBirth: faker.date.past()
+          };
+          data.push( user );
+          length--;
+        }
+        return data;
+      }
+
+      var users = createUsers( 200 );
+      var head = {
+        name: { label: 'Name' },
+        lastName: { label: 'Last Name' },
+        email: { label: 'E-mail' }
+      };
+      
+      var grid1 = document.getElementById( 'data-grid-1' )
       grid1.innerHTML = JSON.stringify( {
         head: {
           name: { label: 'Name' },
@@ -17,7 +52,20 @@ html
           address: { label: 'Address' },
           email: { label: 'E-mail' }
         },
-        data: syn.gridsDemo.faker.users( 10 ) 
+        pagination: false,
+        data: users.slice( 0, 5 )
+        
+      } )
+      
+      var grid2 = document.getElementById( 'data-grid-2' )
+      grid2.innerHTML = JSON.stringify( {
+        head: head,
+        pagination: { 
+          rowsPerPage: 7,
+          buttons: 5,
+          startPage: 2
+        },
+        data: users
       } )
       
       angular.bootstrap( document.body, [ syn.grids.angular.getModule().name ] )
