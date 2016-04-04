@@ -23,7 +23,7 @@ class GridDatasourceArray extends Abstract
   ###
    * Set/get array of objects
    * @param  {Object[]} data
-   * @return {this|Object[]}
+   * @returns {this|Object[]}
   ###
   data: ( data ) ->
     return @_data if typeof data is 'undefined'
@@ -33,7 +33,7 @@ class GridDatasourceArray extends Abstract
 
   ###
    * Returns total number of rows/items
-   * @return {Promise} Resolve with total number of rows
+   * @returns {Promise} Resolve with total number of rows
   ###
   count: ->
     new Promise ( resolve, reject ) =>
@@ -42,7 +42,7 @@ class GridDatasourceArray extends Abstract
 
   ###
    * Returns data according to configured options
-   * @return {Promise}
+   * @returns {Promise}
   ###
   get: ->
     new Promise ( resolve, reject ) =>

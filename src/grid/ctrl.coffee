@@ -57,7 +57,7 @@ class GridCtrl
 
   ###
    * Configs elements of DOM and datasource
-   * @return {Promise}
+   * @returns {Promise}
   ###
   init: ->
     @_headView
@@ -78,7 +78,7 @@ class GridCtrl
 
   ###
    * Updates grid element with data rows
-   * @return {Promise}
+   * @returns {Promise}
   ###
   updateRows: =>
     if @_config.pagination isnt false
@@ -95,7 +95,7 @@ class GridCtrl
 
   ###
    * Destroys component and removes added DOM elements
-   * @return {this}
+   * @returns {GridCtrl} `this`
   ###
   destroy: ->
     @_headView?.destroy()

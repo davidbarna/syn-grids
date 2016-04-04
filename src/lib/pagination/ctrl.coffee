@@ -40,7 +40,7 @@ class PaginationCtrl extends EventsEmitter
 
   ###
    * Sets view and appends it to @element
-   * @return {this}
+   * @returns {PaginationCtrl} `this`
   ###
   init: ->
     # Creates pagination elements only if pagination in not "false"
@@ -53,7 +53,7 @@ class PaginationCtrl extends EventsEmitter
   ###
    * Sets a pagination object
    * @param {Object} options Options expected by Pagination
-   * @return {this}
+   * @returns {PaginationCtrl} `this`
   ###
   setOptions: ( @_options ) ->
     @pagination = new Pagination( @_options )
@@ -70,21 +70,21 @@ class PaginationCtrl extends EventsEmitter
 
   ###
    * Returns rows to skip
-   * @return {number}
+   * @returns {number}
   ###
   getSkipped: ->
     @pagination.current() * @pagination.rowsPerPage()
 
   ###
    * Returns rows to display per page
-   * @return {number}
+   * @returns {number}
   ###
   getLimit: ->
     @pagination.rowsPerPage()
 
   ###
    * Removes appended elements and events
-   * @return {[type]} [description]
+   * @returns {[type]} [description]
   ###
   destroy: ->
     @pagination.removeListener( @pagination.CHANGE, @_onPageChange )

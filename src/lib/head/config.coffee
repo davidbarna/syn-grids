@@ -29,14 +29,14 @@ class GridHeadConfig
 
   ###
    * Returns head keys
-   * @return {string[]}
+   * @returns {string[]}
   ###
   keys: ->
     return _.keys( @_config )
 
   ###
    * Returns head labels
-   * @return {string[]}
+   * @returns {string[]}
   ###
   labels: ->
     row = {}

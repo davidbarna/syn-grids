@@ -26,7 +26,7 @@ class GridPaginationUpdater
    * @param  {number} current Current page number
    * @param  {number} last    Last page number
    * @param  {number} length  Number of buttons to display
-   * @return {number[]} Example: [4,5,6,7,8]
+   * @returns {number[]} Example: [4,5,6,7,8]
   ###
   getNavNumbers: ( current, last, length ) ->
     padding = Math.ceil( length / 2 ) - 1
@@ -70,7 +70,7 @@ class GridPaginationUpdater
   ###
    * Updates previous button
    * It's enabled or disabled depending on current page.
-   * @return {this}
+   * @returns {GridPaginationUpdater} `this`
   ###
   updatePrevButton: ->
     @pagElements.prev
@@ -81,7 +81,7 @@ class GridPaginationUpdater
   ###
    * Updates previous button
    * It's enabled or disabled depending on current page.
-   * @return {this}
+   * @returns {GridPaginationUpdater} `this`
   ###
   updateNextButton: ->
     @pagElements.next

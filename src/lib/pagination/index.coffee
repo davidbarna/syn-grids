@@ -35,7 +35,7 @@ EventsEmitter = require( 'events' )
 ###
 class Pagination extends EventsEmitter
 
-  @CHANGE: 'syn.grid.pagination.change'
+  CHANGE: 'syn.grid.pagination.change'
 
   ###
    * Default options values
@@ -48,7 +48,7 @@ class Pagination extends EventsEmitter
   ###
    * Emits Pagination.CHANGE event
    * Current page number and last page are passed as params.
-   * @return {this}
+   * @returns {Pagination} `this`
   ###
   _emitChange: ->
     @emit( @CHANGE, @_current, @last() )
@@ -75,7 +75,7 @@ class Pagination extends EventsEmitter
   ###
    * Set/Get number of buttons to display in navigation bar
    * @param  {number} num Number of buttons
-   * @return {number|this}
+   * @returns {number|this}
   ###
   buttons: ( num ) ->
     return @_buttons if typeof num is 'undefined'
@@ -88,7 +88,7 @@ class Pagination extends EventsEmitter
    * Set/get rows total count
    * Needed to know number of possible pages.
    * @param  {Number} num Number of rows/items
-   * @return {number|this}
+   * @returns {number|this}
   ###
   rowsCount: ( num ) ->
     return @_rowsCount if typeof num is 'undefined'
@@ -100,7 +100,7 @@ class Pagination extends EventsEmitter
    * Set/get number of rows per page.
    * Needed to know number of possible pages.
    * @param  {Number} num Number of rows/items per page
-   * @return {number|this}
+   * @returns {number|this}
   ###
   rowsPerPage: ( num ) ->
     return @_rowsPerPage if typeof num is 'undefined'
@@ -112,7 +112,7 @@ class Pagination extends EventsEmitter
    * Set/Get current page number
    * Based on 0: third page would be number 2, not 3.
    * @param  {number} num Number of page to set
-   * @return {number|this}
+   * @returns {number|this}
   ###
   current: ( num ) ->
     return @_current if typeof num is 'undefined'
@@ -128,35 +128,35 @@ class Pagination extends EventsEmitter
   ###
    * Returns last page number.
    * Based on 0. If there is 20 pages, 19 will be returned
-   * @return {number}
+   * @returns {number}
   ###
   last: ->
     return Math.ceil( @_rowsCount / @_rowsPerPage ) - 1
 
   ###
    * Returns if there is a "previous" page to current
-   * @return {Boolean}
+   * @returns {Boolean}
   ###
   hasPrev: ->
     @current() > 0
 
   ###
    * Returns if there is a "next" page to current
-   * @return {Boolean}
+   * @returns {Boolean}
   ###
   hasNext: ->
     @current() < @last()
 
   ###
    * Returns next page number
-   * @return {number}
+   * @returns {number}
   ###
   next: ->
     return if @hasNext() then @_current + 1 else @last()
 
   ###
    * Returns previous page number
-   * @return {number}
+   * @returns {number}
   ###
   prev: ->
     return if @hasPrev() then @_current - 1 else 0

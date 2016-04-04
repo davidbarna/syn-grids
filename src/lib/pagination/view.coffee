@@ -22,11 +22,14 @@ class GridPaginationView extends EventsEmitter
   PAGE_CLASS: '--pagination-page'
   PREV_CLASS: '--pagination-prev'
   NEXT_CLASS: '--pagination-next'
+  KEYS:
+    ARROW_LEFT: 37
+    ARROW_RIGHT: 39
 
   ###
    * Emits a "page change" event
    * @param  {Event} event
-   * @return {undefined}
+   * @returns {undefined}
   ###
   _buttonClickHandler: ( event ) =>
     page = event.target.getAttribute( 'page' )
@@ -35,11 +38,11 @@ class GridPaginationView extends EventsEmitter
   ###
    * On "<" or ">", it simulates a click on prev or next button
    * @param  {Event} event
-   * @return {undefined}
+   * @returns {undefined}
   ###
   _keyPressHandler: ( event ) =>
-    @prev?.trigger( 'click' ).focus() if event.keyCode is 37
-    @next?.trigger( 'click' ).focus() if event.keyCode is 39
+    @prev?.trigger( 'click' ).focus() if event.keyCode is @KEYS.ARROW_LEFT
+    @next?.trigger( 'click' ).focus() if event.keyCode is @KEYS.ARROW_RIGHT
 
   ###
    * @constructor
@@ -55,9 +58,9 @@ class GridPaginationView extends EventsEmitter
     @length( @pagination.buttons() )
 
   ###
-   * Define length of nav bar
+   * Defines/Gets length of nav bar
    * @param  {number} length Number of buttons
-   * @return {this}
+   * @returns {GridPaginationView} `this`
   ###
   length: ( length ) ->
     return @_length if typeof length is 'undefined'
@@ -71,7 +74,7 @@ class GridPaginationView extends EventsEmitter
    * If length has increased of reduced, the bar
    * is updated dinamically.
    * @param  {number} length Number of buttons
-   * @return {this}
+   * @returns {GridPaginationView} `this`
   ###
   build: ( length ) ->
     buttonsNum = length - 1
@@ -95,7 +98,7 @@ class GridPaginationView extends EventsEmitter
    * Creates a new DOM element for a buttons with click event handler
    * @param  {string} text Text of the button
    * @param  {string} cssClass = @PAGE_CLASS CSS class
-   * @return {DOM Element} jqLite instance
+   * @returns {DOM Element} jqLite instance
   ###
   createButton: ( text, cssClass ) ->
     button = $( document.createElement( @TAGNAME ) )
@@ -108,7 +111,7 @@ class GridPaginationView extends EventsEmitter
   ###
    * Removes listeners and button from DOM
    * @param  {DOM Element} button jqLite instance
-   * @return {this}
+   * @returns {GridPaginationView} `this`
   ###
   destroyButton: ( button ) ->
     button
@@ -118,7 +121,7 @@ class GridPaginationView extends EventsEmitter
 
   ###
    * Removes all added DOM elements and events
-   * @return {this}
+   * @returns {GridPaginationView} `this`
   ###
   destroy: ->
     @element.off( 'keydown', @_keyPressHandler )
