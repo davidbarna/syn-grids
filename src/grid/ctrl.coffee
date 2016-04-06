@@ -1,7 +1,8 @@
 HeadConfig = require( '../lib/head/config' )
 DatasourceArray = require( '../lib/datasource/array' )
 Pagination = require( '../lib/pagination/ctrl' )
-DomRowsBuilder = require( '../lib/dom/rows/builder' )
+RowBuilder = require( '../lib/dom/rows/builder' )
+Header = require( '../lib/head/ctrl' )
 
 ###
  * # GridCtrl
@@ -33,9 +34,10 @@ class GridCtrl
   ###
   constructor: ( @element ) ->
     @_head = new HeadConfig()
+    @_datasource = new DatasourceArray()
     @_pagination = new Pagination( @element.find( @NAV_ELEMENT ) )
-    @_rowsView = new DomRowsBuilder()
-    @_headView = new DomRowsBuilder()
+    @_rows = new RowBuilder( @element.find( @BODY_ELEMENT ) )
+    @_header = new Header( @element.find( @HEADER_ELEMENT ), @_head, @_datasource )
 
   ###
    * Sets config of current grid
@@ -60,16 +62,15 @@ class GridCtrl
    * @returns {Promise}
   ###
   init: ->
-    @_headView
-      .setTarget( @element.find( @HEADER_ELEMENT ) )
-      .setTags( null, 'TH' )
-    @_rowsView
-      .setTarget( @element.find( @BODY_ELEMENT ) )
     @_pagination
       .on( @_pagination.CHANGE, @updateRows )
       .init()
-    @_datasource = new DatasourceArray()
+    @_datasource
+      .multiSort( false )
       .data( @_config.data )
+    @_header
+      .on( @_header.SORT, @updateRows )
+      .init()
 
     # Count is obtain to config pagination
     @_datasource.count()
@@ -90,19 +91,24 @@ class GridCtrl
       .keys( @_head.keys() )
       .get()
       .then ( data ) =>
-        @_rowsView.setRows( data )
-        @_headView.setRows( [ @_head.labels() ] )
+        @_rows
+          .setRows( data )
+          .appendToTarget()
 
   ###
    * Destroys component and removes added DOM elements
    * @returns {GridCtrl} `this`
   ###
   destroy: ->
-    @_headView?.destroy()
-    @_rowsView?.destroy()
-    @_pagination?.destroy()
-    return this
+    @_pagination.removeListener( @_pagination.CHANGE, @updateRows )
+    @_header.removeListener( @_header.SORT, @updateRows )
 
+    @_pagination?.destroy()
+    @_rows?.destroy()
+    @_datasource?.destroy?()
+    @_header?.destroy()
+
+    return this
 
 
 module.exports = GridCtrl

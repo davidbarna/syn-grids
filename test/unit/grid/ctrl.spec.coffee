@@ -5,8 +5,9 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
   GridCtrl = require( 'src/grid/ctrl' )
   GridHeadConfig = require( 'src/lib/head/config' )
   Pagination = require( 'src/lib/pagination/ctrl' )
-  DomRowsBuilder = require( 'src/lib/dom/rows/builder' )
+  RowBuilder = require( 'src/lib/dom/rows/builder' )
   GridDatasourceArray = require( 'src/lib/datasource/array' )
+  Header = require( 'src/lib/head/ctrl' )
 
   instance = element = sandbox = fakeConfig = result = null
 
@@ -21,7 +22,24 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
         buttons: 5,
         startPage: 2
       data: [ { name: 'David' } ]
-    instance = new GridCtrl( element )
+
+  afterAll ->
+    sandbox.restore()
+    instance.destroy()
+
+  describe '#constructor', ->
+
+    beforeAll ->
+      sandbox.spy( RowBuilder.prototype, 'setTarget' )
+      instance = new GridCtrl( element )
+
+    afterAll ->
+      sandbox.restore()
+
+    it 'should config body and header views', ->
+      { HEADER_ELEMENT, BODY_ELEMENT } = instance
+      RowBuilder::setTarget.should.have.been.calledWith element.find( HEADER_ELEMENT )
+      RowBuilder::setTarget.should.have.been.calledWith element.find( BODY_ELEMENT )
 
 
   describe '#setConfig', ->
@@ -40,11 +58,13 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
   describe '#init', ->
 
     beforeAll ->
-      sandbox.spy( DomRowsBuilder.prototype, 'setTags' )
-      sandbox.spy( DomRowsBuilder.prototype, 'setTarget' )
+      sandbox.spy( RowBuilder.prototype, 'setTags' )
       sandbox.spy( Pagination.prototype, 'on' )
       sandbox.spy( Pagination.prototype, 'init' )
+      sandbox.spy( Header.prototype, 'on' )
+      sandbox.stub( Header.prototype, 'init' )
       sandbox.spy( GridDatasourceArray.prototype, 'data' )
+      sandbox.spy( GridDatasourceArray.prototype, 'multiSort' )
       sandbox.stub( instance, 'setDatasource' )
       sandbox.stub( instance, 'updateRows' )
       result = instance.init()
@@ -58,15 +78,17 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
       )
       Pagination::init.should.have.been.calledOnce
 
-    it 'should config view and datasource', ->
-      { HEADER_ELEMENT, BODY_ELEMENT } = instance
-      DomRowsBuilder::setTarget.should.have.been.calledWith element.find( HEADER_ELEMENT )
-      DomRowsBuilder::setTarget.should.have.been.calledWith element.find( BODY_ELEMENT )
+    it 'should instantiate pagination', ->
+      Header::on.should.have.been.calledWithExactly(
+        Header::SORT, instance.updateRows
+      )
+      Header::init.should.have.been.calledOnce
 
-    it 'should instantiate data source', ->
+    it 'should instantiate and configure data source', ->
       GridDatasourceArray::data.should.have.been.calledWith fakeConfig.data
+      GridDatasourceArray::multiSort.should.have.been.calledWith false
 
-    it 'should updateRows the view', ( done ) ->
+    it 'should update rows of the view', ( done ) ->
       result.then ->
         instance.updateRows.should.have.been.calledOnce
         done()
@@ -81,7 +103,8 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
       sandbox.spy( GridDatasourceArray.prototype, 'limit' )
       sandbox.spy( GridDatasourceArray.prototype, 'skip' )
       sandbox.stub( GridDatasourceArray.prototype, 'get' ).returns promise
-      sandbox.stub( DomRowsBuilder.prototype, 'setRows' )
+      sandbox.spy( RowBuilder.prototype, 'setRows' )
+      sandbox.stub( RowBuilder.prototype, 'appendToTarget' )
 
       result = instance.init()
 
@@ -96,15 +119,16 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
 
     it 'should updateRows views with the result', ( done ) ->
       result.then ->
-        DomRowsBuilder::setRows.should.have.been.calledTwice
-        DomRowsBuilder::setRows.should.have.been.calledWith 'fakeData'
-        DomRowsBuilder::setRows.should.have.been.calledWith [ { name: 'fakeLabel' } ]
+        RowBuilder::setRows.should.have.been.calledTwice
+        RowBuilder::setRows.should.have.been.calledWith 'fakeData'
+        RowBuilder::setRows.should.have.been.calledWith [ { name: 'fakeLabel' } ]
+        RowBuilder::appendToTarget.should.have.been.calledTwice
         done()
 
     it 'should set limit and skipped from pagination to datasource', ->
       opts = fakeConfig.pagination
-      GridDatasourceArray::limit.args[1][0].should.equal opts.rowsPerPage
-      GridDatasourceArray::skip.args[1][0].should.equal opts.rowsPerPage * opts.startPage
+      GridDatasourceArray::limit.args[0][0].should.equal opts.rowsPerPage
+      GridDatasourceArray::skip.args[0][0].should.equal opts.rowsPerPage * opts.startPage
 
     describe 'when pagination is disabled', ->
 
@@ -120,15 +144,25 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
   describe '#destroy', ->
 
     beforeAll ->
-      sandbox.stub( DomRowsBuilder.prototype, 'destroy' )
+      sandbox.stub( instance._pagination, 'removeListener' )
+      sandbox.stub( instance._header, 'removeListener' )
+      sandbox.stub( RowBuilder.prototype, 'destroy' )
       sandbox.stub( Pagination.prototype, 'destroy' )
+      sandbox.stub( Header.prototype, 'destroy' )
       instance.destroy()
 
     afterAll ->
       sandbox.restore()
 
+    it 'should unregister events', ->
+      instance._pagination.removeListener.should.have.been.called
+      instance._header.removeListener.should.have.been.called
+
     it 'should destroy both dom rows builders', ->
-      DomRowsBuilder::destroy.should.have.been.calledTwice
+      RowBuilder::destroy.should.have.been.calledOnce
 
     it 'should destroy pagination', ->
       Pagination::destroy.should.have.been.calledOnce
+
+    it 'should destroy header', ->
+      Header::destroy.should.have.been.calledOnce
