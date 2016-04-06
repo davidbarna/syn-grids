@@ -8,12 +8,9 @@ describe 'syn.grids.datasource.Array', ->
       { name: '', surname: 'Johnson', age: 23 , email: 'mary@gmail.com' }
       { name: 'Ted', surname: 'Carter', age: 24 , email: 'ted@gmail.com' }
     ]
-
     Promise = require( 'bluebird' )
     Datasource = require( 'src/lib/datasource/array' )
     instance = new Datasource()
-
-  afterAll ->
 
   describe '#data', ->
 
@@ -22,7 +19,6 @@ describe 'syn.grids.datasource.Array', ->
 
     it 'should set/get array of data', ->
       instance.data().should.equal 'fakeData'
-
 
   describe '#count', ->
 
@@ -41,6 +37,20 @@ describe 'syn.grids.datasource.Array', ->
       instance.keys( [ 'name', 'age' ] )
       instance.data( originalData )
 
+    describe 'when sort option is defined', ->
+
+    it 'should return data according to filter', ( done ) ->
+      instance
+        .sort( 'age', false )
+        .get().then ( data ) ->
+          data.should.deep.equal [
+            { name: 'Ted', age: 24 }
+            { name: '', age: 23 }
+            { name: 'David', age: 14 }
+          ]
+          done()
+
+      instance.unsort( 'age' )
 
     describe 'when keys are set', ->
 
