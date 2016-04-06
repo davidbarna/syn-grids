@@ -71,8 +71,8 @@ class GridDatasourceAbstract
    * Gets/Sets multisort option
    * If set to true, sort option is unique so data can be sorted
    * only by one key, not more than one by default.
-   * @param  {[type]} multiSort [description]
-   * @return {[type]}           [description]
+   * @param  {Boolean} multiSort
+   * @return {Boolean|GridDatasourceAbstract}
   ###
   multiSort: ( multiSort ) ->
     return @_multiSort if typeof multiSort is 'undefined'

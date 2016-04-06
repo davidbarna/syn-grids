@@ -62,7 +62,7 @@ class PaginationCtrl extends EventsEmitter
 
   ###
    * Sets total rows
-   * @param {[type]} count [description]
+   * @param {number} count
   ###
   setCount: ( count ) ->
     @pagination.rowsCount( count )
@@ -84,7 +84,6 @@ class PaginationCtrl extends EventsEmitter
 
   ###
    * Removes appended elements and events
-   * @returns {[type]} [description]
   ###
   destroy: ->
     @pagination.removeListener( @pagination.CHANGE, @_onPageChange )

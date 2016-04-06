@@ -7,10 +7,15 @@
  *
  * ```coffeescript
  * headConfig = new GridHeadConfig()
- * headConfig.setConfig( { name: label: 'Name', surname: label: 'Surname' } )
+ * headConfig.setConfig( {
+ * 	name: label: 'Name',
+ * 	surname: label: 'Surname', sort: true
+ * 	} )
  *
  * console.log headConfig.labels()
  * #output: [ 'Name', 'Surname' ]
+ * console.log headConfig.sortKeys()
+ * #output: [ 'surname' ]
  * ```
 ###
 _ = require( 'lodash' )

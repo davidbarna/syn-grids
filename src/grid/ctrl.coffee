@@ -41,7 +41,7 @@ class GridCtrl
 
   ###
    * Sets config of current grid
-   * @param {Object @_config [description]
+   * @param {Object} @_config
    * @param {Object} @_config.head - Head config
    * @param {Object[]} @_config.data - Data rows to display
   ###
