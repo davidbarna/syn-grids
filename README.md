@@ -12,7 +12,7 @@ Shows a grid base on inline json config.
 <syn-grid>
 {
   head: {
-    name: { label: 'Name' },
+    name: { label: 'Name', sort: true },
     surname: { label: 'Last Name' },
     pagination: false
   },
@@ -39,6 +39,7 @@ Output:
 | head | {Object} | Config of grid's head |
 | head.foo | {Object} | Config options of the column |
 | head.foo.label | {String} | Name of the column |
+| head.foo.sort | {Boolean} | Wether column is sortable or not ( default: false ) |
 | [pagination] | {Object} | Pagination config. Set to false to hide pagination |
 | [pagination].buttons | {Number} | Number of page buttons to display ( default: 10 ) |
 | [pagination].rowsPerPage | {Number} | Rows to display per page. ( default: 20 ) |

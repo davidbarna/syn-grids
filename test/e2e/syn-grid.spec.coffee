@@ -1,20 +1,25 @@
 describe '<syn-grid />', ->
 
-  rows = nextButton = activeButton = null
+  grid = rows = header = headerCells = null
+
+  switchToGrid = ( id ) ->
+    grid = element( By.id( id ) )
+    header = grid.all( By.css( 'thead tr' ) )
+    headerCells = header.all( By.tagName( 'th' ) )
+    rows = grid.all( By.css( 'tbody tr' ) )
 
   beforeAll ->
     browser.get( '/doc/demo/' )
-      .then ->
-        grid = element( By.id( 'data-grid-2' ) )
-        rows = grid.all( By.tagName( 'tr' ) )
-        pagination = grid.all( By.tagName( 'nav' ) )
-
-        nextButton = pagination.all( By.className( '--pagination-next' ) )
-        activeButton = pagination.all( By.className( '--active' ) )
 
   describe 'pagination', ->
 
-    firstRowText = activeNum = null
+    firstRowText = activeNum = nextButton = activeButton = null
+
+    beforeAll ->
+      switchToGrid( 'data-grid-2' )
+      pagination = grid.all( By.tagName( 'nav' ) )
+      nextButton = pagination.all( By.className( '--pagination-next' ) )
+      activeButton = pagination.all( By.className( '--active' ) )
 
     describe 'when users clicks on NEXT button', ->
 
@@ -39,3 +44,40 @@ describe '<syn-grid />', ->
       it 'should go to previous page', ->
         expect( rows.get( 0 ).getText() ).toEqual firstRowText
         expect( activeButton.get( 0 ).getText() ).toEqual String( activeNum )
+
+  describe 'sorting', ->
+
+    firstRowText = null
+
+    beforeAll ->
+
+      switchToGrid( 'data-grid-3' )
+      rows.get( 0 ).getText()
+        .then ( text ) -> firstRowText = text
+
+    describe 'when users clicks on none sorted column', ->
+
+      beforeAll ->
+        headerCells.get(0).click()
+
+      it 'should order column asc', ->
+        expect( rows.get( 0 ).getText() ).not.toEqual firstRowText
+        expect( headerCells.get(0).getAttribute('class') ).toContain 'sort-asc'
+
+    describe 'when users clicks on asc sorted column', ->
+
+      beforeAll ->
+        headerCells.get(0).click()
+
+      it 'should order column asc', ->
+        expect( headerCells.get(0).getAttribute('class') ).toContain 'sort-desc'
+
+    describe 'when another column is sorted', ->
+
+      beforeAll ->
+        headerCells.get(1).click()
+
+      it 'should order new column and unorder previous one', ->
+        expect( headerCells.get(1).getAttribute('class') ).toContain 'sort-asc'
+        expect( headerCells.get(0).getAttribute('class') ).not.toContain 'sort-desc'
+        expect( headerCells.get(0).getAttribute('class') ).not.toContain 'sort-asc'

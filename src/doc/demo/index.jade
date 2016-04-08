@@ -11,6 +11,10 @@ html
     a(name="grid-2")
     h2 Data Grid with pagination
     syn-grid#data-grid-2()
+      
+    a(name="grid-3")
+    h2 Data Grid with sort columns
+    syn-grid#data-grid-3()
     
     script(type='text/javascript', src='faker.min.js')
     script(type='text/javascript', src='/index.bundle.js')
@@ -39,11 +43,12 @@ html
 
       var users = createUsers( 200 );
       var head = {
-        name: { label: 'Name' },
-        lastName: { label: 'Last Name' },
+        name: { label: 'Name', sort: true },
+        lastName: { label: 'Last Name', sort: true },
         email: { label: 'E-mail' }
       };
-      
+    
+    script(type='text/javascript').
       var grid1 = document.getElementById( 'data-grid-1' )
       grid1.innerHTML = JSON.stringify( {
         head: {
@@ -56,7 +61,8 @@ html
         data: users.slice( 0, 5 )
         
       } )
-      
+    
+    script(type='text/javascript').
       var grid2 = document.getElementById( 'data-grid-2' )
       grid2.innerHTML = JSON.stringify( {
         head: head,
@@ -67,5 +73,18 @@ html
         },
         data: users
       } )
+    
+    script(type='text/javascript').
+      var grid3 = document.getElementById( 'data-grid-3' )
+      grid3.innerHTML = JSON.stringify( {
+        head: {
+          name: { label: 'Name', sort: true },
+          lastName: { label: 'Last Name', sort: true },
+          email: { label: 'E-mail' }
+        },
+        pagination: { rowsPerPage: 5 },
+        data: users.slice( 0, 80 )
+      } )
       
+    script(type='text/javascript').
       angular.bootstrap( document.body, [ syn.grids.angular.getModule().name ] )

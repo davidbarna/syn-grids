@@ -28,6 +28,20 @@ $_spacing: 2rem;
     text-align: left;
   }
 
+  th {
+    &.--sort-asc {
+      #icon-sort_asc {
+        fill: rgba( #fff, 1 );
+      }
+    }
+
+    &.--sort-desc {
+      #icon-sort_desc {
+        fill: rgba( #fff, 1 );
+      }
+    }
+  }
+
   &_pagination {
 
     &.--disabled {
@@ -48,10 +62,24 @@ $_spacing: 2rem;
         font-weight: bold;
         color: #fff;
       }
-      
+
       &.--disabled {
         opacity: .5;
       }
     }
+  }
+}
+
+.syn-grid-cell-option--sort {
+  float: left;
+  width: 10px;
+  padding: 0;
+  margin-left: -12px;
+  margin-right: 5px;
+  background: none;
+  border: 0;
+
+  path {
+    fill: rgba( #fff, .5 );
   }
 }
