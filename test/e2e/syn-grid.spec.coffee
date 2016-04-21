@@ -9,7 +9,7 @@ describe '<syn-grid />', ->
     rows = grid.all( By.css( 'tbody tr' ) )
 
   beforeAll ->
-    browser.get( '/doc/demo/' )
+    browser.get( '/docs/' )
 
   describe 'pagination', ->
 

@@ -13,9 +13,9 @@ Shows a grid base on inline json config.
 {
   head: {
     name: { label: 'Name', sort: true },
-    surname: { label: 'Last Name' },
-    pagination: false
+    surname: { label: 'Last Name' }
   },
+  pagination: false,
   data: [
     { name: 'David', surname: 'Smith', age: 46 }
     { name: 'Susan', surname: 'Collins', age: 34 }

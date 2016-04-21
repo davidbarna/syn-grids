@@ -5,7 +5,7 @@ gridDirective =
   controller: [ '$scope', '$element', '$transclude', ( scope, elem, trans ) ->
     GridCtrl = require( './ctrl' )
     ctrl = new GridCtrl( elem )
-    require( 'dev-tools' ).angularify( scope, ctrl )
+    require( 'syn-core' ).angularify( scope, ctrl )
     trans( ( clone, scope ) ->
       config = JSON.parse( clone.html() )
       ctrl
