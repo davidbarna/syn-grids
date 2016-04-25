@@ -1,6 +1,6 @@
 {
   "name": "syn-grids",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Data grid components.",
   "main": "dist/index.js",
   "files": [
@@ -11,7 +11,9 @@
     "prepublish": "gulp"
   },
   "browserify": {
-    "transform": [ "stringify" ]
+    "transform": [
+      "stringify"
+    ]
   },
   "repository": {
     "type": "git",
