@@ -1,3 +1,4 @@
+
 html
   head
     meta(name='viewport', content='user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height')
@@ -11,10 +12,10 @@ html
     a(name="grid-2")
     h2 Data Grid with pagination
     syn-grid#data-grid-2()
-      
+    p &nbsp;
     a(name="grid-3")
-    h2 Data Grid with sort columns
-    syn-grid#data-grid-3()
+    h2 Data Grid with sort columns (config passed by scope)
+    syn-grid#data-grid-3(config="grid3Config")
     
     script(type='text/javascript', src='faker.min.js')
     script(type='text/javascript', src='/index.bundle.js')
@@ -76,15 +77,18 @@ html
     
     script(type='text/javascript').
       var grid3 = document.getElementById( 'data-grid-3' )
-      grid3.innerHTML = JSON.stringify( {
-        head: {
-          name: { label: 'Name', sort: true },
-          lastName: { label: 'Last Name', sort: true },
-          email: { label: 'E-mail' }
-        },
-        pagination: { rowsPerPage: 5 },
-        data: users.slice( 0, 80 )
-      } )
       
     script(type='text/javascript').
-      angular.bootstrap( document.body, [ syn.grids.angular.getModule().name ] )
+      var module = syn.grids.angular.getModule()
+      module.run( function($rootScope) {
+        $rootScope.grid3Config = {
+          head: {
+            name: { label: 'Name', sort: true },
+            lastName: { label: 'Last Name', sort: true },
+            email: { label: 'E-mail' }
+          },
+          pagination: { rowsPerPage: 5 },
+          data: users.slice( 0, 80 )
+        }
+      } )
+      angular.bootstrap( document.body, [ module.name ] )

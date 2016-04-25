@@ -23,7 +23,7 @@ $_spacing: 2rem;
   }
 
   td, th {
-    padding: $_spacing/2 $_spacing;
+    padding: $_spacing / 2 $_spacing;
     font-weight: normal;
     text-align: left;
   }
@@ -52,7 +52,7 @@ $_spacing: 2rem;
       box-sizing: border-box;
       width: 3.5rem;
       height: 3.5rem;
-      padding: $_spacing/2;
+      padding: $_spacing / 2;
       margin: 1px;
       background: #ddd;
       border: 0;
