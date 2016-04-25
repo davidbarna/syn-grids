@@ -10,6 +10,9 @@
     "test": "gulp test",
     "prepublish": "gulp"
   },
+  "browserify": {
+    "transform": [ "stringify" ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/soyundev/syn-grids.git"
