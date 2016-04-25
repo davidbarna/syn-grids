@@ -45,7 +45,7 @@ class GridCtrl
    * @param {Object} @_config.head - Head config
    * @param {Object[]} @_config.data - Data rows to display
   ###
-  setConfig: ( @_config ) ->
+  setConfig: ( @_config = {} ) ->
     @_head.setConfig( @_config.head ) if !!@_config.head
     @_pagination.setOptions( @_config.pagination )
     return this
