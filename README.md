@@ -6,14 +6,43 @@ Data grid components.
 ### syn-grid
 Shows a grid base on inline json config.
 
+#### options
+
+| Name | Type | Description |
+|------|------|-------------|
+| cells | {Object} | Options of grid's cells |
+| cells.foo | {Object} | Options options of the cells of `foo` property |
+| cells.foo.filter | {Function} | A filter for the view. The function will be called and its result will be placed in the cell, instead of original value
+| cells.classes | {Array} | List of css classes to add to each cell of `foo` property |
+| cells.buttons | {Object} | List of buttons to add inside each cell of `foo` property |
+| cells.buttons[bar] | {Object} | Config for a button |
+| cells.buttons[bar].* | {Object} | Any of the mentioned options of `cells.foo` |
+| cells.on | {Object} | List of callbacks for events |
+| cells.on[eventName] | {Array, Function} | Call to call on event's triggering |
+| head.foo | {Object} | Options options of the column |
+| head.foo.label | {String} | Name of the column |
+| head.foo.sort | {Boolean} | Wether column is sortable or not ( default: false ) |
+| head.foo.* | {*} | Any option available in `cells`  |
+| [pagination] | {Object} | Pagination config. Set to false to hide pagination |
+| [pagination].buttons | {Number} | Number of page buttons to display ( default: 10 ) |
+| [pagination].rowsPerPage | {Number} | Rows to display per page. ( default: 20 ) |
+| [pagination].startPage | {Number} | First page to display ( default: 0 ) |
+| [data] | {Object[]} | Data rows to display |
+
 **Example of use:**
 
 ```html
-<syn-grid>
-{
+<script>
+$scope.gridConfig = {
   head: {
     name: { label: 'Name', sort: true },
     surname: { label: 'Last Name' }
+  },
+  cells: {
+    name:
+      filter: function(key, value, item) {
+        return value + " (" + item.age + ")"
+      }
   },
   pagination: false,
   data: [
@@ -22,28 +51,15 @@ Shows a grid base on inline json config.
     { name: 'Joe', surname: 'Johnson', age: 34, email: 'joe@gmail.com' }
   ]
 }
-</syn-grid>
+</script>
+<syn-grid options="gridConfig">
 ```
 Output:
 
 | Name  | Last Name |
 |-------|:---------:|
-| David | Smith     |
-| Susan | Collins   |
-| Joe   | Johnson   |
+| David (46) | Smith     |
+| Susan (34) | Collins   |
+| Joe (34)   | Johnson   |
 
-#### options
-
-| Name | Type | Description |
-|------|------|-------------|
-| head | {Object} | Config of grid's head |
-| head.foo | {Object} | Config options of the column |
-| head.foo.label | {String} | Name of the column |
-| head.foo.sort | {Boolean} | Wether column is sortable or not ( default: false ) |
-| [pagination] | {Object} | Pagination config. Set to false to hide pagination |
-| [pagination].buttons | {Number} | Number of page buttons to display ( default: 10 ) |
-| [pagination].rowsPerPage | {Number} | Rows to display per page. ( default: 20 ) |
-| [pagination].startPage | {Number} | First page to display ( default: 0 ) |
-| [data] | {Object[]} | Data rows to display |
-
->To see a demo of components, execute gulp serve command and open this url in >a browser: http://localhost:3000/doc/demo/
+>To see a demo of components, execute gulp serve command and open this url in >a browser: http://localhost:3000/docs/

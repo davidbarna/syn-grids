@@ -10,11 +10,11 @@ html
     syn-grid#data-grid-1()
     p &nbsp;
     a(name="grid-2")
-    h2 Data Grid with pagination
+    h2 Data Grid with pagination and sortable columns
     syn-grid#data-grid-2()
     p &nbsp;
     a(name="grid-3")
-    h2 Data Grid with sort columns (config passed by scope)
+    h2 Data Grid with cell filters
     syn-grid#data-grid-3(options="grid3Config")
     
     script(type='text/javascript', src='faker.min.js')
@@ -45,8 +45,8 @@ html
       var users = createUsers( 200 );
       var head = {
         name: { label: 'Name', sort: true },
-        lastName: { label: 'Last Name', sort: true },
-        email: { label: 'E-mail' }
+        email: { label: 'E-mail', sort: true },
+        dateOfBirth: { label: 'Birth date' }
       };
     
     script(type='text/javascript').
@@ -81,11 +81,21 @@ html
     script(type='text/javascript').
       var module = syn.grids.angular.getModule()
       module.run( function($rootScope) {
+      
         $rootScope.grid3Config = {
-          head: {
-            name: { label: 'Name', sort: true },
-            lastName: { label: 'Last Name', sort: true },
-            email: { label: 'E-mail' }
+          head: head,
+          cells: {
+            dateOfBirth: { 
+              filter: function(key, value, item) {
+                var date = new Date(value)
+                return date.toLocaleString()
+              }
+            },
+            email: {
+              filter: function(key, value, item) {
+                return "<a href=\"mailto:"+value+"\">"+value+"</a>"
+              }
+            }
           },
           pagination: { rowsPerPage: 5 },
           data: users.slice( 0, 80 )

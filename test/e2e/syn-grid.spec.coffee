@@ -50,7 +50,6 @@ describe '<syn-grid />', ->
     firstRowText = null
 
     beforeAll ->
-
       switchToGrid( 'data-grid-3' )
       rows.get( 0 ).getText()
         .then ( text ) -> firstRowText = text
@@ -81,3 +80,10 @@ describe '<syn-grid />', ->
         expect( headerCells.get(1).getAttribute('class') ).toContain 'sort-asc'
         expect( headerCells.get(0).getAttribute('class') ).not.toContain 'sort-desc'
         expect( headerCells.get(0).getAttribute('class') ).not.toContain 'sort-asc'
+
+  describe 'filters', ->
+
+    it 'should apply email filter', ->
+      rows.get( 0 ).getInnerHtml()
+        .then ( text ) ->
+          expect(text).toContain '<a href="mailto:'
