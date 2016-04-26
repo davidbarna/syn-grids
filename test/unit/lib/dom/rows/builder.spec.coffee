@@ -18,20 +18,41 @@ describe 'syn.grids.dom.rows.Builder', ->
     sandbox.restore()
     instance.destroy()
 
-  describe '#setTags', ->
+  describe '#setRows & #setTags', ->
+    opts = nameCell = surnameCell = null
 
     beforeAll ->
+      opts = {
+        on:
+          click: sinon.stub()
+        surname:
+          on:
+            click: sinon.stub()
+      }
       instance
         .setTags( 'LI', 'SPAN' )
-        .setRows( rowsData )
+        .setRows( rowsData, opts )
         .appendToTarget()
+
+      nameCell = instance.getCells( 'name' )[0]
+      surnameCell = instance.getCells( 'surname' )[0]
 
     afterAll ->
       instance.setTags()
 
     it 'should change generated row and cell tags', ->
-      target.innerHTML.should.contain '>David</'
-      target.innerHTML.should.contain '>Johnson</'
+      target.innerHTML.should.contain '>David</span><span'
+      target.innerHTML.should.contain '>Johnson</span></li>'
+
+    it 'should apply global and specific options', ->
+      nameCell.trigger( 'click' )
+      opts.on.click.should.have.been.calledOnce
+      opts.surname.on.click.should.not.have.been.calledOnce
+
+      surnameCell.trigger( 'click' )
+      opts.on.click.should.have.been.calledTwice
+      opts.surname.on.click.should.have.been.calledOnce
+
 
   describe '#appendToTarget', ->
 
@@ -61,26 +82,30 @@ describe 'syn.grids.dom.rows.Builder', ->
         rows[0].innerHTML.should.contain '>Brad</'
         rows[0].innerHTML.should.contain '>Brody</'
 
-  describe '#applyCellOptions, #applyElementOptions', ->
+  describe '#applyElementOptions , #applyButtonsOptions', ->
 
     opts = nameCell = null
 
     beforeAll ->
       opts =
-        on: click: sandbox.stub()
-        buttons:
-          name:
+        name:
+          on: click: sandbox.stub()
+          filter: (key, value) ->
+            return '<person>' + value + '</person>'
+          buttons:
             sort:
               classes: [ 'test-class' ]
               content: 'SORT_BUTTON_CONTENT'
               on: keydown: sandbox.stub()
-            filter:
-              content: 'FILTER_BUTTON_CONTENT'
-      instance.applyCellOptions( opts )
+
+
       nameCell = instance.getCells( 'name' )[0]
+      instance.applyElementOptions(
+        nameCell, 'name', opts.name, { name: 'Brad', surname: 'Brody' }
+      )
 
     it 'should create defined buttons', ->
-      nameCell.find( 'button' ).length.should.equal 2
+      nameCell.find( 'button' ).length.should.equal 1
 
     it 'should add defined classes', ->
       nameCell.find( 'button' ).hasClass( 'test-class' ).should.equal true
@@ -91,11 +116,14 @@ describe 'syn.grids.dom.rows.Builder', ->
 
     it 'should set defined events on button', ->
       nameCell.find( 'button' ).trigger( 'keydown' )
-      opts.buttons.name.sort.on.keydown.should.have.been.calledOnce
+      opts.name.buttons.sort.on.keydown.should.have.been.calledOnce
 
     it 'should set events on main cell', ->
       nameCell.trigger( 'click' )
-      opts.on.click.should.have.been.calledOnce
+      opts.name.on.click.should.have.been.calledOnce
+
+    it 'should apply filter', ->
+      nameCell.html().should.contain '<person>Brad</person>'
 
   describe '#getCells', ->
 

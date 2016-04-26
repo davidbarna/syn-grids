@@ -40,25 +40,24 @@ class HeadCtrl extends EventsEmitter
    * @return {HeadCtrl} `this`
   ###
   init: ->
-    hasSortOption = false
-    cellsOptions = buttons: {}
+    cellsOptions = {}
 
     for key in @config.sortKeys()
-      hasSortOption = true
-      cellsOptions.buttons[key] ?= {}
-      cellsOptions.buttons[key].sort =
+      cellsOptions[key] ?= {}
+      cellsOptions[key].buttons ?= {}
+      cellsOptions[key].buttons.sort =
         content: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 299.8 408.3">
           <path id="icon-sort_desc" fill="#CCC" d="M1.1 176.8L149.9.8l148.8 176z"/>
           <path id="icon-sort_asc" fill="#CCC" d="M298.7 231.4L149.9 407.5 1.1 231.4z"/>
         </svg>'
         on: click: @_sortClickHandler
 
-    cellsOptions.on = click: @_sortClickHandler if hasSortOption
+      cellsOptions[key].on ?= {}
+      cellsOptions[key].on.click = @_sortClickHandler
 
     # DOM building
     @_view
-      .setRows( [ @config.labels() ] )
-      .applyCellOptions( cellsOptions )
+      .setRows( [ @config.labels() ], cellsOptions )
     @update( @datasource.sort() )
 
     # After build, element is added to DOM

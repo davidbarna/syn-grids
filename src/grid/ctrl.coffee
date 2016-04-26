@@ -1,4 +1,5 @@
 HeadConfig = require( '../lib/head/config' )
+CellsConfig = require( '../lib/cells/config' )
 DatasourceArray = require( '../lib/datasource/array' )
 Pagination = require( '../lib/pagination/ctrl' )
 RowBuilder = require( '../lib/dom/rows/builder' )
@@ -34,6 +35,7 @@ class GridCtrl
   ###
   constructor: ( @element ) ->
     @_head = new HeadConfig()
+    @_cells = new CellsConfig()
     @_datasource = new DatasourceArray()
     @_pagination = new Pagination( @element.find( @NAV_ELEMENT ) )
     @_rows = new RowBuilder( @element.find( @BODY_ELEMENT ) )
@@ -47,6 +49,7 @@ class GridCtrl
   ###
   setConfig: ( @_config = {} ) ->
     @_head.setConfig( @_config.head ) if !!@_config.head
+    @_cells.setConfig( @_config.cells ) if !!@_config.cells
     @_pagination.setOptions( @_config.pagination )
     return this
 
@@ -92,7 +95,7 @@ class GridCtrl
       .get()
       .then ( data ) =>
         @_rows
-          .setRows( data )
+          .setRows( data, @_cells.get() )
           .appendToTarget()
 
   ###

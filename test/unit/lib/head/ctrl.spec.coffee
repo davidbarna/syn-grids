@@ -2,7 +2,7 @@ describe 'syn.grids.head.Config', ->
 
   RowsBuilder = require( 'src/lib/dom/rows/builder' )
 
-  instance = sandbox = datasource = null
+  instance = sandbox = datasource = originalData = config = null
 
   beforeAll ->
     originalData = [
@@ -37,7 +37,7 @@ describe 'syn.grids.head.Config', ->
 
     beforeAll ->
       sandbox.spy( RowsBuilder.prototype, 'setRows' )
-      sandbox.spy( RowsBuilder.prototype, 'applyCellOptions' )
+      sandbox.spy( RowsBuilder.prototype, 'applyElementOptions' )
       sandbox.spy( instance, 'update' )
       instance.init()
 
@@ -48,16 +48,21 @@ describe 'syn.grids.head.Config', ->
       )
 
     it 'should set sort options', ->
-      opts = RowsBuilder::applyCellOptions.args[0][0]
-      RowsBuilder::applyCellOptions.should.have.been.calledOnce
-      opts.buttons.name.sort.should.exist
-      opts.buttons.name.sort.on.click.should.exist
-      opts.buttons.name.sort.on.click.should.equal instance._sortClickHandler
-      opts.buttons.email.sort.should.exist
-      opts.on.click.should.exist
-      opts.on.click.should.equal instance._sortClickHandler
+      opts = RowsBuilder::applyElementOptions.args[0][2]
+      clickableButtons = 2
+      clickableCells = clickableButtons * originalData.length
 
-      expect( opts.buttons.surname ).to.be.undefined
+      RowsBuilder::applyElementOptions.callCount
+        .should.equal clickableCells + clickableButtons
+
+      opts.name.buttons.sort.should.exist
+      opts.name.buttons.sort.on.click.should.exist
+      opts.name.buttons.sort.on.click.should.equal instance._sortClickHandler
+      opts.email.buttons.sort.should.exist
+      opts.name.on.click.should.exist
+      opts.name.on.click.should.equal instance._sortClickHandler
+
+      expect( opts.surname.buttons ).to.be.undefined
 
     it 'should update view with current options', ->
       instance.update.should.have.been.called

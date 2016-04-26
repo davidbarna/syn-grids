@@ -52,45 +52,28 @@ class DomRowsBuilder
    * Create rows and add them to DOM target
    * @param {Object[]} data
   ###
-  setRows: ( data ) ->
+  setRows: ( data, options = {} ) ->
     @_rows = []
     @_cells = {}
 
     for idx, obj of data
       row = document.createElement( @_rowTag )
       for key, value of obj
-        className = 'syn-grid-cell--' + key
-        cell = document.createElement( @_cellTag )
-        cell.classList.add( className )
-        cell.innerHTML = value
-        row.appendChild( cell )
+        options[key] ?= {}
+        $cell = $( document.createElement( @_cellTag ) )
+        $cell.addClass( 'syn-grid-cell--' + key )
+
+        # Both glogal and specific options are applied
+        @applyElementOptions( $cell, key, options, obj )
+        @applyElementOptions( $cell, key, options[key], obj )
+
+        # Cell is registered
+        row.appendChild( $cell[0] )
         @_cells[key] ?= { elements: [] }
-        @_cells[key].elements.push( $( cell ) )
+        @_cells[key].elements.push( $cell )
+
       @_rows.push( row )
 
-    return this
-
-  ###
-   * Modifies cells with new buttons sub elements
-   * according con options
-   * @param {Object} options See properties in @applyElementOptions
-   * @param {array} options.buttons Sub elements with config
-  ###
-  applyCellOptions: ( options ) ->
-    return this if !@_cells
-    
-    for key, opts of options.buttons
-      continue if !@_cells[key]
-
-      for cell in @_cells[key].elements
-        @applyElementOptions( cell, key, options )
-
-        for optionName, optionAttrs of opts
-          optionButton = $( document.createElement( 'BUTTON' ) )
-          optionAttrs.classes ?= []
-          optionAttrs.classes.push( 'syn-grid-cell-option--' + optionName )
-          @applyElementOptions( optionButton, key, optionAttrs )
-          cell.append( optionButton )
 
     return this
 
@@ -98,20 +81,50 @@ class DomRowsBuilder
    * Parses options and sets corresponding attributes on element
    * @param  {jqLite} element DOM Element onto apply options
    * @param  {string} key Cell key (label) of the element
+   * @param  {Object} data = {} Datsa of current item
    * @param  {Object} opts Options to apply
    * @param  {array|null} opts.classes Css classes to add to element
    * @param  {string} opts.content Html content to add to the element
    * @param  {Object} opts.on List of events to bind
    * @param  {Function} opts.on.eventName Event callback
+   * @param  {Function} opts.filter.eventName Filter function to modify view value
    * @return {undefined}
   ###
-  applyElementOptions: ( element, key, opts ) ->
+  applyElementOptions: ( element, key, opts = {}, data = {} ) ->
     element.addClass( opts.classes.join( ' ' ) ) if !!opts.classes
-    element.html( opts.content )
 
-    return if !opts.on
-    for eventName, handler of opts.on
-      element.on( eventName, ( event ) -> handler( event, key ) )
+    # Cell content
+    cellContent = data[key] || opts.content || ''
+    if (opts.filter)
+      cellContent = opts.filter(key, cellContent, data )
+    element.html( cellContent )
+
+    # Events
+    if !!opts.on
+      for eventName, handler of opts.on
+        element.on( eventName, ( event ) -> handler( event, key ) )
+
+    # Secondary buttons of the cell
+    @applyButtonsOptions( element, key, opts.buttons )
+
+    return
+
+  ###
+   * Modifies cells with new buttons sub elements
+   * according con options.
+   * @param {array} buttons Sub elements with config
+  ###
+  applyButtonsOptions: ( element, key, buttons ) ->
+    return this if !buttons
+
+    for optionName, optionAttrs of buttons
+      optionButton = $( document.createElement( 'BUTTON' ) )
+      optionAttrs.classes ?= []
+      optionAttrs.classes.push( 'syn-grid-cell-option--' + optionName )
+      @applyElementOptions( optionButton, key, optionAttrs )
+      element.append( optionButton )
+
+    return this
 
   ###
    * Returns DOM cell elements corresponding to a certain key
