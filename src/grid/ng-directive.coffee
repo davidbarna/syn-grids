@@ -1,6 +1,6 @@
 gridDirective =
   scope: {
-    config: '&'
+    options: '&'
   }
   transclude: true
   template: require( './tpl' )
@@ -12,7 +12,7 @@ gridDirective =
       if !!clone.html()
         config = JSON.parse( clone.html() )
       else
-        config = scope.config()
+        config = scope.options()
       ctrl
         .setConfig( config )
         .init()
