@@ -13,12 +13,12 @@ Shows a grid base on inline json config.
 | cells | {Object} | Options of grid's cells |
 | cells.foo | {Object} | Options options of the cells of `foo` property |
 | cells.foo.filter | {Function} | A filter for the view. The function will be called and its result will be placed in the cell, instead of original value
-| cells.classes | {Array} | List of css classes to add to each cell of `foo` property |
-| cells.buttons | {Object} | List of buttons to add inside each cell of `foo` property |
-| cells.buttons[bar] | {Object} | Config for a button |
-| cells.buttons[bar].* | {Object} | Any of the mentioned options of `cells.foo` |
-| cells.on | {Object} | List of callbacks for events |
-| cells.on[eventName] | {Array, Function} | Call to call on event's triggering |
+| cells.foo.classes | {Array} | List of css classes to add to each cell of `foo` property |
+| cells.foo.buttons | {Object} | List of buttons to add inside each cell of `foo` property |
+| cells.foo.buttons[bar] | {Object} | Config for a button |
+| cells.foo.buttons[bar].* | {Object} | Any of the mentioned options of `cells.foo` |
+| cells.foo.on | {Object} | List of callbacks for events |
+| cells.foo.on[eventName] | {Array, Function} | Call to call on event's triggering |
 | head.foo | {Object} | Options options of the column |
 | head.foo.label | {String} | Name of the column |
 | head.foo.sort | {Boolean} | Wether column is sortable or not ( default: false ) |
