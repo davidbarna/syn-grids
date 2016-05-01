@@ -40,25 +40,28 @@ class HeadCtrl extends EventsEmitter
    * @return {HeadCtrl} `this`
   ###
   init: ->
-    cellsOptions = {}
+    keys = @config.keys()
+    cellsOptions = @config.get()
 
-    for key in @config.sortKeys()
-      cellsOptions[key] ?= {}
-      cellsOptions[key].buttons ?= {}
-      cellsOptions[key].buttons.sort =
-        content: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 299.8 408.3">
-          <path id="icon-sort_desc" fill="#CCC" d="M1.1 176.8L149.9.8l148.8 176z"/>
-          <path id="icon-sort_asc" fill="#CCC" d="M298.7 231.4L149.9 407.5 1.1 231.4z"/>
-        </svg>'
-        on: click: @_sortClickHandler
+    for key in keys
+      opts = cellsOptions[key]
 
-      cellsOptions[key].on ?= {}
-      cellsOptions[key].on.click = @_sortClickHandler
+      if (opts.sort)
+        cellsOptions[key].buttons ?= {}
+        cellsOptions[key].buttons.sort =
+          content: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 299.8 408.3">
+            <path id="icon-sort_desc" fill="#CCC" d="M1.1 176.8L149.9.8l148.8 176z"/>
+            <path id="icon-sort_asc" fill="#CCC" d="M298.7 231.4L149.9 407.5 1.1 231.4z"/>
+          </svg>'
+          on: click: @_sortClickHandler
+
+        cellsOptions[key].on ?= {}
+        cellsOptions[key].on.click = @_sortClickHandler
 
     # DOM building
     @_view
       .setRows( [ @config.labels() ], cellsOptions )
-    @update( @datasource.sort() )
+    @update( )
 
     # After build, element is added to DOM
     @_view.appendToTarget()

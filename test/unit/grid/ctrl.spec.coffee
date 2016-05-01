@@ -98,6 +98,7 @@ describe 'syn.grids.<syn-grid />.ctrl', ->
     beforeAll ->
       promise = new Promise( ( resolve ) -> resolve( 'fakeData' ) )
       sandbox.stub( GridHeadConfig.prototype, 'keys' ).returns [ 'fakeKey' ]
+      sandbox.stub( GridHeadConfig.prototype, 'get' ).returns { 'fakeKey': {} }
       sandbox.stub( GridHeadConfig.prototype, 'labels' ).returns { name: 'fakeLabel' }
       sandbox.spy( GridDatasourceArray.prototype, 'keys' )
       sandbox.spy( GridDatasourceArray.prototype, 'limit' )

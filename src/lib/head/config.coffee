@@ -62,6 +62,13 @@ class GridHeadConfig
       row[key] = obj.label || ''
     return row
 
+  ###
+   * Returns full config
+   * @return {Object}
+  ###
+  get: ->
+    return @_config
+
 
 
 module.exports = GridHeadConfig
