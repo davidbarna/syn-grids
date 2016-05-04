@@ -95,7 +95,7 @@ class GridCtrl
       .get()
       .then ( data ) =>
         @_rows
-          .setRows( data, @_cells.get() )
+          .setRows( data, @_head.keys(), @_cells.get() )
           .appendToTarget()
 
   ###

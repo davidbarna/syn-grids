@@ -50,15 +50,18 @@ class DomRowsBuilder
 
   ###
    * Create rows and add them to DOM target
-   * @param {Object[]} data
+   * @param {Object[]} data Array of rows' data
+   * @param {Array} keys Keys which cells should be created
+   * @param {Object} options = {} Options for DomRowBuilder
   ###
-  setRows: ( data, options = {} ) ->
+  setRows: ( data, keys, options = {} ) ->
     @_rows = []
     @_cells = {}
 
     for idx, obj of data
       row = document.createElement( @_rowTag )
-      for key, value of obj
+
+      for idx, key of keys
         options[key] ?= {}
         $cell = $( document.createElement( @_cellTag ) )
         $cell.addClass( 'syn-grid-cell--' + key )

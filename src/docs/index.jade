@@ -15,6 +15,7 @@ html
     p &nbsp;
     a(name="grid-3")
     h2 Data Grid with cell filters
+    p You can click on cells to see how events are handled
     syn-grid#data-grid-3(options="grid3Config")
     
     script(type='text/javascript', src='faker.min.js')
@@ -85,6 +86,11 @@ html
         $rootScope.grid3Config = {
           head: head,
           cells: {
+            on: {
+              click: function (event, key, data) {
+                window.alert('Clicked on ' + data.name + ' ' + data.lastName )
+              }
+            },
             dateOfBirth: { 
               filter: function(key, value, item) {
                 var date = new Date(value)

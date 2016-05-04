@@ -51,14 +51,10 @@ class GridDatasourceArray extends Abstract
       keys = @keys() || _.keys( _data[0] )
 
       _data = sortBy( _data, @sort() )
-      # Filter required keys
       startIdx = @skip()
       lastIdx = startIdx + @limit()
       while startIdx < lastIdx and !!_data[startIdx]
-        obj = _data[startIdx]
-        _obj = {}
-        _obj[key] = obj[key] || '' for key in keys
-        result.push( _obj )
+        result.push( _data[startIdx] )
         startIdx++
 
       resolve( result )

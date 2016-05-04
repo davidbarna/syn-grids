@@ -44,9 +44,9 @@ describe 'syn.grids.datasource.Array', ->
         .sort( 'age', false )
         .get().then ( data ) ->
           data.should.deep.equal [
-            { name: 'Ted', age: 24 }
-            { name: '', age: 23 }
-            { name: 'David', age: 14 }
+            originalData[2]
+            originalData[1]
+            originalData[0]
           ]
           done()
 
@@ -58,13 +58,9 @@ describe 'syn.grids.datasource.Array', ->
         instance.keys( [ 'name', 'age' ] )
         result = instance.get()
 
-      it 'should return all data with filtered keys', ( done ) ->
+      it 'should return all data with with all keys', ( done ) ->
         result.then ( data ) ->
-          data.should.deep.equal [
-            { name: 'David', age: 14 }
-            { name: '', age: 23 }
-            { name: 'Ted', age: 24 }
-          ]
+          data.should.deep.equal originalData
           done()
 
     describe 'when keys are not set', ->
@@ -86,14 +82,14 @@ describe 'syn.grids.datasource.Array', ->
       it 'should return results according to limit', ( done ) ->
         instance.limit( 2 ).get().then ( data ) ->
           data.should.deep.equal [
-            { name: 'David', age: 14 }
-            { name: '', age: 23 }
+            originalData[0]
+            originalData[1]
           ]
           done()
 
       it 'should return results according to skip property', ( done ) ->
         instance.skip( 2 ).get().then ( data ) ->
           data.should.deep.equal [
-            { name: 'Ted', age: 24 }
+            originalData[2]
           ]
           done()

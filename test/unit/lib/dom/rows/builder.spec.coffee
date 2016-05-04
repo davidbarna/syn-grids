@@ -1,11 +1,12 @@
 describe 'syn.grids.dom.rows.Builder', ->
 
-  instance = rowsData = target = result = sandbox = null
+  instance = dataKeys = rowsData = target = result = sandbox = null
 
   beforeAll ->
     $ = require( 'jqlite' )
     RowsBuilder = require( 'src/lib/dom/rows/builder' )
     sandbox = sinon.sandbox.create()
+    dataKeys = [ 'name', 'surname' ]
     rowsData = [
       { name: 'David', surname: 'Smith' }
       { name: 'Mary', surname: 'Johnson' }
@@ -31,7 +32,7 @@ describe 'syn.grids.dom.rows.Builder', ->
       }
       instance
         .setTags( 'LI', 'SPAN' )
-        .setRows( rowsData, opts )
+        .setRows( rowsData, dataKeys,  opts )
         .appendToTarget()
 
       nameCell = instance.getCells( 'name' )[0]
@@ -53,13 +54,12 @@ describe 'syn.grids.dom.rows.Builder', ->
       opts.on.click.should.have.been.calledTwice
       opts.surname.on.click.should.have.been.calledOnce
 
-
   describe '#appendToTarget', ->
 
     beforeAll ->
       instance.destroy()
       instance
-          .setRows( rowsData )
+          .setRows( rowsData, dataKeys )
           .appendToTarget()
 
     it 'should add rows to target element', ->
@@ -73,7 +73,7 @@ describe 'syn.grids.dom.rows.Builder', ->
       beforeAll ->
         data = [ { name: 'Brad', surname: 'Brody' } ]
         instance
-          .setRows( data )
+          .setRows( data, dataKeys )
           .appendToTarget()
 
       it 'should replace rows with new ones', ->

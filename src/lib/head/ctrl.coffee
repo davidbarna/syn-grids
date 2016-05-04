@@ -60,7 +60,7 @@ class HeadCtrl extends EventsEmitter
 
     # DOM building
     @_view
-      .setRows( [ @config.labels() ], cellsOptions )
+      .setRows( [ @config.labels() ], @config.keys(), cellsOptions )
     @update( )
 
     # After build, element is added to DOM
