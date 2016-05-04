@@ -102,7 +102,7 @@ class DomRowsBuilder
     # Events
     if !!opts.on
       for eventName, handler of opts.on
-        element.on( eventName, ( event ) -> handler( event, key ) )
+        element.on( eventName, ( event ) -> handler( event, key, data ) )
 
     # Secondary buttons of the cell
     @applyButtonsOptions( element, key, opts.buttons )
